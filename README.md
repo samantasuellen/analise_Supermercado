@@ -118,3 +118,11 @@ print("\nComparação Real x Previsto:")
 print(resultado)
 
 ```
+### Gráfico
+
+
+<img width="423" height="312" alt="lucro mensal" src="https://github.com/user-attachments/assets/5f317456-fd32-460e-9149-160ce684442e" />
+<img width="423" height="309" alt="vendas mensal" src="https://github.com/user-attachments/assets/bde34eda-54e6-4d9d-9df1-f77629713d3a" />
+<img width="424" height="314" alt="Faturamento e custos" src="https://github.com/user-attachments/assets/00969de6-8a6b-46e2-a71c-b4fa61737c19" />
+
+
