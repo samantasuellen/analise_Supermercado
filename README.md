@@ -4,27 +4,117 @@ Este projeto acadêmico tem como objetivo aplicar conceitos básicos de Estatís
 ### Exemplo
 
 ```
-Entrar com quantos colaboradores: 3
-Taxa pagamento #1:
-A pessoa é Fisica ou Juridica: (F/J)? F
-Nome: Alex
-Valor anual: 50000.00
-Gastos com saude: 2000.00
-Taxa pagamento #2:
-A pessoa é Fisica ou Juridica: (F/J)? J
-Nome: SoftTech
-Valor anual: 400000.00
-Numero de empregaodos: 25
-Taxa pagamento #3:
-A pessoa é Fisica ou Juridica: (F/J)? F
-Nome: Bob
-Valor anual: 120000.00
-Gastos com saude: 1000.00
+# Projeto Acadêmico - Análise de Dados de Supermercado
+# Estatística Aplicada + Machine Learning Básico
+# Dados fictícios
 
-pagamento de taxa:
-Alex: $ 11500.00
-SoftTech: $ 56000.00
-Bob: $ 29500.00
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-Total de taxa: $ 97000.00
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error
+
+# -----------------------------
+# 1. Criando dados fictícios
+# -----------------------------
+np.random.seed(1)
+
+meses = [
+    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+]
+
+volume_vendas = np.random.randint(800, 1500, 12)
+preco_medio = np.random.uniform(8, 15, 12)
+custos_fixos = np.random.uniform(4000, 6000, 12)
+custos_variaveis = volume_vendas * np.random.uniform(2, 4, 12)
+
+faturamento = volume_vendas * preco_medio
+custos_totais = custos_fixos + custos_variaveis
+lucro = faturamento - custos_totais
+
+df = pd.DataFrame({
+    "Mes": meses,
+    "Volume_Vendas": volume_vendas,
+    "Faturamento": faturamento,
+    "Custos_Totais": custos_totais,
+    "Lucro": lucro
+})
+
+print("Dados do Supermercado:")
+print(df)
+
+# -----------------------------
+# 2. Estatística Descritiva
+# -----------------------------
+media_vendas = df["Volume_Vendas"].mean()
+desvio_padrao = df["Volume_Vendas"].std()
+
+# Margem de erro (95%)
+n = len(df)
+margem_erro = 1.96 * (desvio_padrao / np.sqrt(n))
+
+print("\nEstatísticas:")
+print(f"Média de Vendas: {media_vendas:.2f}")
+print(f"Margem de Erro (95%): ±{margem_erro:.2f}")
+
+# -----------------------------
+# 3. Gráficos
+# -----------------------------
+plt.figure()
+plt.plot(df["Mes"], df["Volume_Vendas"])
+plt.title("Volume de Vendas Mensal")
+plt.xlabel("Mês")
+plt.ylabel("Unidades Vendidas")
+plt.show()
+
+plt.figure()
+plt.plot(df["Mes"], df["Faturamento"], label="Faturamento")
+plt.plot(df["Mes"], df["Custos_Totais"], label="Custos")
+plt.title("Faturamento x Custos")
+plt.xlabel("Mês")
+plt.ylabel("Valor (R$)")
+plt.legend()
+plt.show()
+
+plt.figure()
+plt.bar(df["Mes"], df["Lucro"])
+plt.title("Lucro Mensal")
+plt.xlabel("Mês")
+plt.ylabel("Lucro (R$)")
+plt.show()
+
+# -----------------------------
+# 4. Machine Learning Básico
+# -----------------------------
+# Prever faturamento com base no volume de vendas
+
+X = df[["Volume_Vendas"]]
+y = df["Faturamento"]
+
+X_treino, X_teste, y_treino, y_teste = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+modelo = LinearRegression()
+modelo.fit(X_treino, y_treino)
+
+previsoes = modelo.predict(X_teste)
+
+erro = mean_absolute_error(y_teste, previsoes)
+
+print("\nMachine Learning:")
+print(f"Erro médio absoluto (MAE): {erro:.2f}")
+
+# Comparação real x previsto
+resultado = pd.DataFrame({
+    "Faturamento Real": y_teste.values,
+    "Faturamento Previsto": previsoes
+})
+
+print("\nComparação Real x Previsto:")
+print(resultado)
+
 ```
